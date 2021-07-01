@@ -1,0 +1,46 @@
+{% extends 'zappApp/layout.html'%} {% load crispy_forms_tags%} {% block body %}
+<br>
+
+<div class="container border p-4 rounded col-4">
+    <h4 class="p-3">SignUp Form</h4>
+    <form method="POST" , action="{% url 'Signup' %}" id='signupForm'>
+
+        {{form| crispy}}
+        <input class="btn-btn-sm btn-success m=3 p-2 rounded" type="submit" value="Signup"> {% csrf_token %}
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+<script>
+    $(document).on('submit', '#signupForm', function(e) {
+        e.preventDefault();
+        var name = $('#id_name').val()
+        var username = $('#id_username').val()
+        var email = $('#id_email').val()
+        var contact = $('#id_contact').val()
+        var password = $('#id_password').val()
+        var confirm_password = $('#id_confirm_password').val()
+
+
+        //ajax call
+        $.ajax({
+            type: 'POST',
+            url: '/signup/',
+            data: {
+
+                name: name,
+                username: username,
+                email: email,
+                contact: contact,
+                password: password,
+                confirm_password: confirm_password,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function(response) {
+                console.log(response)
+            }
+        })
+    })
+</script>
+{% endblock %}
